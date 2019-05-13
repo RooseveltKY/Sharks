@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <script src= "homePage.html"></script>
+    <script src= "p5.min.js"></script>
+   
+    <script src="jumper.js"></script>
+    <script src="barrier.js"></script>
+    <script src= "p5.collide2d.min.js"></script>
+    <script src= "p5.sound.min.js"></script>
+    
+    <style>
+      body{
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background-image: url("ocean3.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      #gameOver{
+        font-family: monospace;
+        color: 	#a10303;
+        font-size: 125px;
+        text-align: center;
+        position: absolute;
+        top: 350px;
+        left: 50px;
+        right: 50px;
+        z-index: 2;
+      }
+      #score{
+        font-family: monospace;
+        color: #302c9f;
+        font-size: 35px;
+        text-align: center;
+        position: absolute;
+        top: 0px;
+        left: 50px;
+        right: 50px;
+        z-index: 2;
+      }
+      #level{
+        font-family: monospace;
+        color: #302c9f;
+        font-size: 45px;
+        text-align: center;
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        right: 50px;
+        z-index: 2;
+      }
+    
+      
+    </style>
+  </head>
+  
+  <body>
+    <h2 id= "score"></h2>
+    <h1 id= "gameOver"></h1>
+  
+    
+    <script>
+    //Game over= hit; +1 miss; Everytime we score a point, the barrier speed increases; more barriers released, less air resistence
+    
+    
+    var w= window.innerWidth;
+    var h= window.innerHeight;
+    var jumper= new jumper();
+    var barrier= new barrier();
+    var barrier2= new barrier2();
+    var barrier3= new barrier3();
+
+    var fish;
+    var shark;
+    var shark2;
+    var shark3;
+    
+    var hit= false;
+    var hit2= false;
+    var score= 0;
+    var level= 1;
+     
+    function preload() {
+      soundFormats('mp3');
+      mySound= loadSound('underSea.mp3');
+
+    }  
+    function setup() {
+        createCanvas(w,h);
+        fish= loadImage("fish-icon.png");
+        shark= loadImage("shark.png");
+        shark2= loadImage("shark2.png");
+        shark3= loadImage("shark3.png");
+
+        mySound.setVolume(10);
+        mySound.play();
+      }
+      
+      function draw(){
+        clear();
+        background("rgba(255,255,255,0)");
+        
+        jumper.show();
+        jumper.move();
+        jumper.update();
+        
+        barrier.show();
+        barrier.update();
+        
+        barrier2.show();
+        barrier2.update();
+
+        barrier3.show();
+        barrier3.update();
+
+
+        hit = collideRectRect(
+          barrier.x,
+          barrier.y,
+          350/2,
+          150/2,
+          jumper.x,
+          jumper.y,
+          150/2,
+          62/2
+          );
+        hit2 = collideRectRect(
+          barrier2.x,
+          barrier2.y,
+          250/2,
+          107/2,
+          jumper.x,
+          jumper.y,
+          150/2,
+          62/2
+          );
+          
+        hit3 = collideRectRect(
+          barrier3.x,
+          barrier3.y,
+          600/2,
+          257/2,
+          jumper.x,
+          jumper.y,
+          150/2,
+          62/2
+          );
+        document.getElementById('score').innerHTML= "Score: "+ score;
+        // document.getElementById('level').innerHTML= "Level "+ level;
+        
+        
+        if ((hit == true) || (hit2 == true) || (hit3 == true)) {
+          document.getElementById('gameOver').innerHTML= "GAME OVER"; 
+          noLoop();
+        }
+
+      }
+      
+    </script>
+  </body>
+</html>
